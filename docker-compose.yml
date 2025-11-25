@@ -37,7 +37,7 @@ services:
       MARIADB_DATABASE: laravel_docker        # nama database default
       MARIADB_USER: root            # user biasa
       MARIADB_PASSWORD: 12345         # password user biasa
-      MARIADB_ROOT_PASSWORD: rootsecret# password root
+      MARIADB_ROOT_PASSWORD: 12345 # password root
     volumes:
       - db_data:/var/lib/mysql         # volume untuk simpan data DB
     networks:
