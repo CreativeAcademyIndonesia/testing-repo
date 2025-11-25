@@ -1,50 +1,49 @@
-version: '3.8'   # versi format docker-compose
+version: "3.8" # versi format docker-compose
 
 services:
-  app:                          # service Laravel (PHP-FPM)
-    build: .                    # build image dari Dockerfile di folder ini
-    container_name: laravel_app # nama container biar gampang di-cek
-    restart: unless-stopped     # auto nyala kecuali kita stop manual
-    working_dir: /var/www/html  # direktori kerja di dalam container
-    volumes:
-      - ./:/var/www/html        # mount kode Laravel dari host ke container
-    environment:
-      - APP_ENV=production      # set environment Laravel di container
-      - APP_DEBUG=false
-    networks:
-      - laravel                 # join ke network bernama "laravel"
+    app: # service Laravel (PHP-FPM)
+        build: . # build image dari Dockerfile di folder ini
+        container_name: laravel_app # nama container biar gampang di-cek
+        restart: unless-stopped # auto nyala kecuali kita stop manual
+        working_dir: /var/www/html # direktori kerja di dalam container
+        volumes:
+            - /var/www/testing-repo:/var/www/html # mount kode Laravel dari host ke container
+        environment:
+            - APP_ENV=production # set environment Laravel di container
+            - APP_DEBUG=false
+        networks:
+            - laravel # join ke network bernama "laravel"
 
-  nginx:                        # service web server
-    image: nginx:alpine         # pakai image nginx versi ringan (alpine)
-    container_name: laravel_nginx
-    restart: unless-stopped
-    ports:
-      - "80:80"                 # map port 80 host -> 80 container (http)
-    volumes:
-      - ./:/var/www/html        # mount kode Laravel juga (untuk akses file static)
-      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
-                                # pakai config nginx custom
-    depends_on:
-      - app                     # pastikan app jalan dulu
-    networks:
-      - laravel
-  db:                                  # service database MariaDB
-    image: mariadb:10.11               # image resmi MariaDB
-    container_name: laravel_db
-    restart: unless-stopped
-    environment:
-      MARIADB_DATABASE: laravel_docker   # nama database default
-      MARIADB_USER: laravel_user         # user biasa untuk Laravel
-      MARIADB_PASSWORD: secret123        # password user biasa
-      MARIADB_ROOT_PASSWORD: root123     # password root (admin DB)
-    volumes:
-      - db_data:/var/lib/mysql           # volume untuk simpan data DB
-    networks:
-      - laravel
-
+    nginx: # service web server
+        image: nginx:alpine # pakai image nginx versi ringan (alpine)
+        container_name: laravel_nginx
+        restart: unless-stopped
+        ports:
+            - "80:80" # map port 80 host -> 80 container (http)
+        volumes:
+            - /var/www/testing-repo:/var/www/html
+            - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+              # pakai config nginx custom
+        depends_on:
+            - app # pastikan app jalan dulu
+        networks:
+            - laravel
+    db: # service database MariaDB
+        image: mariadb:10.11 # image resmi MariaDB
+        container_name: laravel_db
+        restart: unless-stopped
+        environment:
+            MARIADB_DATABASE: laravel_docker # nama database default
+            MARIADB_USER: laravel_user # user biasa untuk Laravel
+            MARIADB_PASSWORD: secret123 # password user biasa
+            MARIADB_ROOT_PASSWORD: root123 # password root (admin DB)
+        volumes:
+            - db_data:/var/lib/mysql # volume untuk simpan data DB
+        networks:
+            - laravel
 
 networks:
-  laravel:                      # definisi network internal antar container
+    laravel: # definisi network internal antar container
 
 volumes:
-  db_data:                      # definisi named volume untuk database
+    db_data: # definisi named volume untuk database
