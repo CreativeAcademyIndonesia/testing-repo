@@ -28,20 +28,20 @@ services:
       - app                     # pastikan app jalan dulu
     networks:
       - laravel
-
   db:                                  # service database MariaDB
-    image: mariadb:10.11               # image resmi MariaDB (versi bisa kamu sesuaikan)
+    image: mariadb:10.11               # image resmi MariaDB
     container_name: laravel_db
     restart: unless-stopped
     environment:
-      MARIADB_DATABASE: laravel_docker        # nama database default
-      MARIADB_USER: root            # user biasa
-      MARIADB_PASSWORD: 12345         # password user biasa
-      MARIADB_ROOT_PASSWORD: 12345 # password root
+      MARIADB_DATABASE: laravel_docker   # nama database default
+      MARIADB_USER: laravel_user         # user biasa untuk Laravel
+      MARIADB_PASSWORD: secret123        # password user biasa
+      MARIADB_ROOT_PASSWORD: root123     # password root (admin DB)
     volumes:
-      - db_data:/var/lib/mysql         # volume untuk simpan data DB
+      - db_data:/var/lib/mysql           # volume untuk simpan data DB
     networks:
       - laravel
+
 
 networks:
   laravel:                      # definisi network internal antar container
