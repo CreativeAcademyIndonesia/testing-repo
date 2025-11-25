@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y \
     git curl zip unzip libpq-dev libonig-dev libxml2-dev \
     && docker-php-ext-install pdo pdo_mysql mbstring tokenizer xml
 
-# 3. Copy binary composer dari image resmi composer
+# 3. Ambil file composer dari image resmi composer dan copy ke container kita.
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 # 4. Set direktori kerja di dalam container
