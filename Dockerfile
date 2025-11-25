@@ -4,7 +4,7 @@ FROM php:8.2-fpm
 # 2. Update package list dan install dependency yang dibutuhkan Laravel
 RUN apt-get update && apt-get install -y \
     git curl zip unzip libpq-dev libonig-dev libxml2-dev \
-    && docker-php-ext-install pdo pdo_mysql mbstring tokenizer xml
+    && docker-php-ext-install pdo pdo_mysql mbstring xml
 
 # 3. Ambil file composer dari image resmi composer dan copy ke container kita.
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
