@@ -14,16 +14,20 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www/html
 
 # 5. Copy semua file Laravel ke dalam container
-COPY . .
+#    TIDAK DIPAKAI jika menggunakan volume bind mount
+# COPY . .
 
 # 6. Install dependency Laravel (hanya untuk production: tanpa dev)
-RUN composer install --no-dev --optimize-autoloader
+#    TIDAK DIPAKAI jika menggunakan volume bind mount
+# RUN composer install --no-dev --optimize-autoloader
 
 # 7. Optimasi Laravel: cache config, route, dan view
-RUN php artisan config:cache && php artisan route:cache && php artisan view:cache
+#    TIDAK DIPAKAI jika menggunakan volume bind mount
+# RUN php artisan config:cache && php artisan route:cache && php artisan view:cache
 
 # 8. Atur permission supaya storage & cache bisa diakses web server
-RUN chown -R www-data:www-data storage bootstrap/cache
+#    Bisa dijalankan manual setelah container berjalan
+# RUN chown -R www-data:www-data storage bootstrap/cache
 
 # 9. Expose port 9000 (PHP-FPM listen di port ini)
 EXPOSE 9000
